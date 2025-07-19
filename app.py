@@ -9,7 +9,6 @@ def index():
         pregunta = request.form.get("pregunta", "")
         print(f"[{datetime.now()}] Pregunta recibida: {pregunta}")
     return render_template("index.html")
-   
-    if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
 
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=10000)
