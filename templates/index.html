@@ -45,6 +45,7 @@
         function limpiarRespuesta(respuesta) {
             if (typeof respuesta === "string") return respuesta;
             if (respuesta?.text && typeof respuesta.text === "string") return respuesta.text;
+            if (respuesta?.message?.content && typeof respuesta.message.content === "string") return respuesta.message.content;
             try {
                 return JSON.stringify(respuesta, null, 2);
             } catch {
