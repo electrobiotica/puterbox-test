@@ -19,22 +19,20 @@
     <div id="respuesta"></div>
 
     <script>
-        function consultarIA() {
+        async function consultarIA() {
             const pregunta = document.getElementById("pregunta").value;
             if (!pregunta) return alert("Por favor escribí una pregunta.");
-
             document.getElementById("respuesta").innerHTML = "<em>Consultando IA...</em>";
 
-            puter.ai.chat(pregunta, { model: "gpt-4.1" })
-    .then(response => {
-        const text = response?.text || response; // fallback si es string plano
-        document.getElementById("respuesta").innerHTML =
-            "<strong>Respuesta:</strong><br>" + marked.parse(text);
-    })
-                .catch(error => {
-                    document.getElementById("respuesta").innerHTML = "Ocurrió un error al consultar la IA.";
-                    console.error(error);
-                });
+            try {
+                const response = await puter.ai.chat(pregunta, { model: "gpt-4.1" });
+                const text = typeof response === "string" ? response : response?.text || JSON.stringify(response);
+                document.getElementById("respuesta").innerHTML =
+                    "<strong>Respuesta:</strong><br>" + marked.parse(text);
+            } catch (error) {
+                document.getElementById("respuesta").innerHTML = "Ocurrió un error al consultar la IA.";
+                console.error(error);
+            }
         }
     </script>
 </body>
