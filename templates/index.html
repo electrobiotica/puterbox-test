@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <title>Box de Consulta AI</title>
     <script src="https://js.puter.com/v2/"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        #respuesta { margin-top: 20px; }
+        textarea, input, button { padding: 8px; margin: 5px 0; }
+    </style>
 </head>
 <body>
     <h1>Consulta a la IA</h1>
-    <form method="POST">
-        <input type="text" name="pregunta" id="pregunta" placeholder="Escribí tu pregunta..." required>
-        <button type="submit">Enviar</button>
-    </form>
-
+    <input type="text" id="pregunta" placeholder="Escribí tu pregunta..." style="width: 80%;" required>
     <button onclick="consultarIA()">Consultar IA</button>
 
     <div id="respuesta"></div>
@@ -19,9 +21,18 @@
     <script>
         function consultarIA() {
             const pregunta = document.getElementById("pregunta").value;
+            if (!pregunta) return alert("Por favor escribí una pregunta.");
+
+            document.getElementById("respuesta").innerHTML = "<em>Consultando IA...</em>";
+
             puter.ai.chat(pregunta, { model: "gpt-4.1" })
                 .then(response => {
-                    document.getElementById("respuesta").innerHTML = "<p><strong>Respuesta:</strong> " + response + "</p>";
+                    document.getElementById("respuesta").innerHTML =
+                        "<strong>Respuesta:</strong><br>" + marked.parse(response);
+                })
+                .catch(error => {
+                    document.getElementById("respuesta").innerHTML = "Ocurrió un error al consultar la IA.";
+                    console.error(error);
                 });
         }
     </script>
