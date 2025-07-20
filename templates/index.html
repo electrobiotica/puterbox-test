@@ -26,10 +26,11 @@
             document.getElementById("respuesta").innerHTML = "<em>Consultando IA...</em>";
 
             puter.ai.chat(pregunta, { model: "gpt-4.1" })
-                .then(response => {
-                    document.getElementById("respuesta").innerHTML =
-                        "<strong>Respuesta:</strong><br>" + marked.parse(response);
-                })
+    .then(response => {
+        const text = response?.text || response; // fallback si es string plano
+        document.getElementById("respuesta").innerHTML =
+            "<strong>Respuesta:</strong><br>" + marked.parse(text);
+    })
                 .catch(error => {
                     document.getElementById("respuesta").innerHTML = "Ocurrió un error al consultar la IA.";
                     console.error(error);
